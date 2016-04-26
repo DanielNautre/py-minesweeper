@@ -71,8 +71,8 @@ window = Tk()
 playfield = Canvas(window, width=WIDTH, height=HEIGHT)
 
 
-for x in range(0, 9):
-    for y in range(0, 9):
+for x in range(0, 10):
+    for y in range(0, 10):
         playfield.create_text(10 + (30 * x), 10 + (30 * y), text=hints[x][y])
 
 
