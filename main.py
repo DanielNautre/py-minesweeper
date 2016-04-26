@@ -2,7 +2,10 @@
 # -*- coding: utf8 -*
 
 from random import randint
+from Tkinter import *
 
+WIDTH = 400
+HEIGHT = 400
 
 sizex, sizey = 10, 10
 nbMines = 10
@@ -62,3 +65,17 @@ fillHints()
 print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in field]))
 print "\n\n"
 print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in hints]))
+
+
+window = Tk()
+playfield = Canvas(window, width=WIDTH, height=HEIGHT)
+
+
+for x in range(0, 9):
+    for y in range(0, 9):
+        playfield.create_text(10 + (30 * x), 10 + (30 * y), text=hints[x][y])
+
+
+playfield.pack()
+
+window.mainloop()
