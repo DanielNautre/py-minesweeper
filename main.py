@@ -65,6 +65,11 @@ def activateCell(event):
     playfield.delete(cell)
 
 
+def placeFlag(event):
+    cell = event.widget.find_closest(event.x, event.y) 
+    coords =  playfield.coords(cell)
+    playfield.create_text(coords[0] + 15, coords[1] + 15, text="M")
+
 def createPlayfield():
 
     for x in range(sizeY):
@@ -75,6 +80,7 @@ def createPlayfield():
             playfield.create_rectangle(posX, posY, posX + CELLSIZE, posY + CELLSIZE)
             cell[y][x] = playfield.create_rectangle(posX, posY, posX + CELLSIZE, posY + CELLSIZE, fill="white")
             playfield.tag_bind(cell[y][x], '<ButtonPress-1>', activateCell)
+            playfield.tag_bind(cell[y][x], '<ButtonPress-3>', placeFlag)
 
     playfield.pack()
 
