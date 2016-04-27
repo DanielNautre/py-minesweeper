@@ -44,17 +44,17 @@ def fillHints():
                     mineCount = mineCount + field[y-1][x-1]
                 if x > 0:
                     mineCount = mineCount + field[y][x-1]
-                if x > 0 and y < (sizeY-2):
+                if x > 0 and y < (sizeY-1):
                     mineCount = mineCount + field[y+1][x-1]
                 if y > 0:
                     mineCount = mineCount + field[y-1][x]
-                if y < (sizeY-2):
+                if y < (sizeY-1):
                     mineCount = mineCount + field[y+1][x]
-                if x < (sizeX-2) and y > 0:
+                if x < (sizeX-1) and y > 0:
                     mineCount = mineCount + field[y-1][x+1]
-                if x < (sizeX-2):
+                if x < (sizeX-1):
                     mineCount = mineCount + field[y][x+1]
-                if x < (sizeX-2) and y < (sizeY-2):
+                if x < (sizeX-1) and y < (sizeY-1):
                     mineCount = mineCount + field[y+1][x+1]
 
                 hints[y][x] = mineCount
@@ -66,8 +66,6 @@ def activateCell(event):
 
 
 def createPlayfield():
-
-
 
     for x in range(sizeY):
         for y in range(sizeX):
