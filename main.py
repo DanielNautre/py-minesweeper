@@ -8,13 +8,14 @@ import Tkinter
 
 CELLSIZE = 30
 sizeY, sizeX = 10, 10
-nbMines = 20
+nbMines = 10
 WIDTH = (10 * 2) + (sizeY * CELLSIZE)
 HEIGHT = (10 * 2) + (sizeX * CELLSIZE)
 
 
 hints = [[0 for x in range(sizeX)] for y in range(sizeY)]
 field = [[0 for x in range(sizeX)] for y in range(sizeY)]
+cell = [[0 for x in range(sizeX)] for y in range(sizeY)]
 
 
 def fillMineField():
@@ -59,9 +60,14 @@ def fillHints():
                 hints[y][x] = mineCount
 
 
+def activateCell(event):
+    cell = event.widget.find_closest(event.x, event.y)
+    playfield.delete(cell)
+
+
 def createPlayfield():
 
-    playfield = Tkinter.Canvas(window, width=WIDTH, height=HEIGHT)
+
 
     for x in range(sizeY):
         for y in range(sizeX):
@@ -69,6 +75,8 @@ def createPlayfield():
             posY = 10 + (CELLSIZE * y)
             playfield.create_text(posX + 15, posY + 15, text=hints[x][y])
             playfield.create_rectangle(posX, posY, posX + CELLSIZE, posY + CELLSIZE)
+            cell[y][x] = playfield.create_rectangle(posX, posY, posX + CELLSIZE, posY + CELLSIZE, fill="white")
+            playfield.tag_bind(cell[y][x], '<ButtonPress-1>', activateCell)
 
     playfield.pack()
 
@@ -77,6 +85,9 @@ window = Tkinter.Tk()
 
 fillMineField()
 fillHints()
+
+playfield = Tkinter.Canvas(window, width=WIDTH, height=HEIGHT)
+
 createPlayfield()
 
 window.mainloop()
