@@ -1,21 +1,21 @@
 #!/usr/bin/python2.7
 # -*- coding: utf8 -*
 
+
 from random import randint
-from Tkinter import *
+import Tkinter
 
-WIDTH = 400
-HEIGHT = 400
 
+CELLSIZE = 30
 sizeY, sizeX = 10, 10
 nbMines = 20
+WIDTH = (10 * 2) + (sizeY * CELLSIZE)
+HEIGHT = (10 * 2) + (sizeX * CELLSIZE)
+
 
 hints = [[0 for x in range(sizeX)] for y in range(sizeY)]
 field = [[0 for x in range(sizeX)] for y in range(sizeY)]
 
-print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in field]))
-print "\n\n"
-print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in hints]))
 
 def fillMineField():
 
@@ -61,23 +61,25 @@ def fillHints():
 
 def createPlayfield():
 
-    playfield = Canvas(window, width=WIDTH, height=HEIGHT)
+    playfield = Tkinter.Canvas(window, width=WIDTH, height=HEIGHT)
 
     for x in range(sizeY):
         for y in range(sizeX):
-            playfield.create_text(10 + (30 * x), 10 + (30 * y), text=hints[x][y])
+            posX = 10 + (CELLSIZE * x)
+            posY = 10 + (CELLSIZE * y)
+            playfield.create_text(posX + 15, posY + 15, text=hints[x][y])
+            playfield.create_rectangle(posX, posY, posX + CELLSIZE, posY + CELLSIZE)
 
     playfield.pack()
 
 
-
-
-
-window = Tk()
+window = Tkinter.Tk()
 
 fillMineField()
 fillHints()
 createPlayfield()
+
+
 
 # Dirty way of displaying the matrices for debug
 
