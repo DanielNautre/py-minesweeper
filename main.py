@@ -79,12 +79,4 @@ fillMineField()
 fillHints()
 createPlayfield()
 
-
-
-# Dirty way of displaying the matrices for debug
-
-print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in field]))
-print "\n\n"
-print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in hints]))
-
 window.mainloop()
