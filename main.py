@@ -25,9 +25,13 @@ class minesweeper(Tkinter.Tk):
         self.sizeY = 10 # height
         self.sizeX = 10 # width
         self.nbMines = 10
+
+        # Defines the Height and Width of the window based upon 
+        # the grid size and the cell size
         self.WIDTH = (10 * 2) + (self.sizeY * self.CELLSIZE)
         self.HEIGHT = (10 * 2) + (self.sizeX * self.CELLSIZE) 
 
+        #creates the various 2d arrays that will be used in teh game
         self.hints = [[0 for x in range(self.sizeX)] for y in range(self.sizeY)]
         self.field = [[0 for x in range(self.sizeX)] for y in range(self.sizeY)]
         self.cells = [[0 for x in range(self.sizeX)] for y in range(self.sizeY)]
@@ -108,26 +112,21 @@ class minesweeper(Tkinter.Tk):
         for x in range(self.sizeY):
             for y in range(self.sizeX):
                 
-                # start position for the grid
-
+                # start position for the cells
                 posX = 10 + (self.CELLSIZE * x)
                 posY = 10 + (self.CELLSIZE * y)
 
-                # end position for the grid
-
+                # end position for the cells
                 posXbis = posX + self.CELLSIZE
                 posYbis = posY + self.CELLSIZE
                 
                 # position grid
-                # 
                 self.playfield.create_rectangle(posX, posY, posXbis, posYbis)
 
                 # position hints
-                # 
                 self.playfield.create_text(posX + spacer, posY + spacer, text=self.hints[x][y])
                 
                 # position "buttons"
-                
                 self.cells[y][x] = self.playfield.create_rectangle(posX, posY, posXbis, posYbis, fill="white")
                 
 
