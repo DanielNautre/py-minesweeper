@@ -5,93 +5,121 @@
 from random import randint
 import Tkinter
 
+class minesweeper(Tkinter.Tk):
+    """minesweeper class"""
 
-CELLSIZE = 30
-sizeY, sizeX = 10, 10
-nbMines = 10
-WIDTH = (10 * 2) + (sizeY * CELLSIZE)
-HEIGHT = (10 * 2) + (sizeX * CELLSIZE)
+    def __init__(self, parent):
+        Tkinter.Tk.__init__(self,parent)
+        self.parent = parent
+        self.initialize()
 
+    def initialize(self):
 
-hints = [[0 for x in range(sizeX)] for y in range(sizeY)]
-field = [[0 for x in range(sizeX)] for y in range(sizeY)]
-cell = [[0 for x in range(sizeX)] for y in range(sizeY)]
+        self.createValues()
+        self.fillMineField()
+        self.fillHints()
+        self.playfield = Tkinter.Canvas(self, width=self.WIDTH, height=self.HEIGHT)
+        self.createPlayfield()
 
+    def createValues(self):
+        self.CELLSIZE = 30
+        self.sizeY = 10 # height
+        self.sizeX = 10 # width
+        self.nbMines = 10
+        self.WIDTH = (10 * 2) + (self.sizeY * self.CELLSIZE)
+        self.HEIGHT = (10 * 2) + (self.sizeX * self.CELLSIZE) 
 
-def fillMineField():
+        self.hints = [[0 for x in range(self.sizeX)] for y in range(self.sizeY)]
+        self.field = [[0 for x in range(self.sizeX)] for y in range(self.sizeY)]
+        self.cells = [[0 for x in range(self.sizeX)] for y in range(self.sizeY)]
 
-    minesLeftToPlace = nbMines
+    def fillMineField(self):
 
-    while minesLeftToPlace > 0:
-        randY, randX = randint(0, sizeY-1), randint(0, sizeX-1)
-        currentCell = field[randY][randX]
-        if currentCell == 1:
-            pass
-        else:
-            field[randY][randX] = 1
-            minesLeftToPlace = minesLeftToPlace - 1
+        minesLeftToPlace = self.nbMines
 
-
-def fillHints():
-
-    for y in range(sizeY):
-        for x in range(sizeX):
-            if field[y][x] == 1:
-                hints[y][x] = 'X'
+        while minesLeftToPlace > 0:
+            randY, randX = randint(0, self.sizeY-1), randint(0, self.sizeX-1)
+            currentCell = self.field[randY][randX]
+            if currentCell == 1:
+                pass
             else:
-                mineCount = 0
-                if x > 0 and y > 0:
-                    mineCount = mineCount + field[y-1][x-1]
-                if x > 0:
-                    mineCount = mineCount + field[y][x-1]
-                if x > 0 and y < (sizeY-1):
-                    mineCount = mineCount + field[y+1][x-1]
-                if y > 0:
-                    mineCount = mineCount + field[y-1][x]
-                if y < (sizeY-1):
-                    mineCount = mineCount + field[y+1][x]
-                if x < (sizeX-1) and y > 0:
-                    mineCount = mineCount + field[y-1][x+1]
-                if x < (sizeX-1):
-                    mineCount = mineCount + field[y][x+1]
-                if x < (sizeX-1) and y < (sizeY-1):
-                    mineCount = mineCount + field[y+1][x+1]
-
-                hints[y][x] = mineCount
+                self.field[randY][randX] = 1
+                minesLeftToPlace = minesLeftToPlace - 1
 
 
-def activateCell(event):
-    cell = event.widget.find_closest(event.x, event.y)
-    playfield.delete(cell)
+    def fillHints(self):
+
+        for y in range(self.sizeY):
+            for x in range(self.sizeX):
+                if self.field[y][x] == 1:
+                    self.hints[y][x] = 'X'
+                else:
+                    mineCount = 0
+                    if x > 0 and y > 0:
+                        mineCount = mineCount + self.field[y-1][x-1]
+                    if x > 0:
+                        mineCount = mineCount + self.field[y][x-1]
+                    if x > 0 and y < (self.sizeY-1):
+                        mineCount = mineCount + self.field[y+1][x-1]
+                    if y > 0:
+                        mineCount = mineCount + self.field[y-1][x]
+                    if y < (self.sizeY-1):
+                        mineCount = mineCount + self.field[y+1][x]
+                    if x < (self.sizeX-1) and y > 0:
+                        mineCount = mineCount + self.field[y-1][x+1]
+                    if x < (self.sizeX-1):
+                        mineCount = mineCount + self.field[y][x+1]
+                    if x < (self.sizeX-1) and y < (self.sizeY-1):
+                        mineCount = mineCount + self.field[y+1][x+1]
+
+                    self.hints[y][x] = mineCount
 
 
-def placeFlag(event):
-    cell = event.widget.find_closest(event.x, event.y) 
-    coords =  playfield.coords(cell)
-    playfield.create_text(coords[0] + 15, coords[1] + 15, text="M")
+    def activateCell(self, event):
+        cell = event.widget.find_closest(event.x, event.y)
+        self.playfield.delete(cell)
+        coords = self.getCoords(cell)
+        cellValue = self.hints[coords[1]][coords[0]]
+        if cellValue == "X":
+            pass
+            # Boum you're dead
+        elif cellValue == 0:
+            pass
+            # reveal all open field
+        else
+            pass
+            
 
-def createPlayfield():
-
-    for x in range(sizeY):
-        for y in range(sizeX):
-            posX = 10 + (CELLSIZE * x)
-            posY = 10 + (CELLSIZE * y)
-            playfield.create_text(posX + 15, posY + 15, text=hints[x][y])
-            playfield.create_rectangle(posX, posY, posX + CELLSIZE, posY + CELLSIZE)
-            cell[y][x] = playfield.create_rectangle(posX, posY, posX + CELLSIZE, posY + CELLSIZE, fill="white")
-            playfield.tag_bind(cell[y][x], '<ButtonPress-1>', activateCell)
-            playfield.tag_bind(cell[y][x], '<ButtonPress-3>', placeFlag)
-
-    playfield.pack()
+    def placeFlag(self,event):
+        cell = event.widget.find_closest(event.x, event.y)
+        coords = self.playfield.coords(cell)
+        self.playfield.create_text(coords[0] + 15, coords[1] + 15, text="M")
 
 
-window = Tkinter.Tk()
+    def createPlayfield(self):
 
-fillMineField()
-fillHints()
+        spacer = (self.CELLSIZE / 2)
 
-playfield = Tkinter.Canvas(window, width=WIDTH, height=HEIGHT)
+        for x in range(self.sizeY):
+            for y in range(self.sizeX):
+                posX = 10 + (self.CELLSIZE * x)
+                posY = 10 + (self.CELLSIZE * y)
+                self.playfield.create_text(posX + spacer, posY + spacer, text=self.hints[x][y])
+                self.playfield.create_rectangle(posX, posY, posX + self.CELLSIZE, posY + self.CELLSIZE)
+                self.cells[y][x] = self.playfield.create_rectangle(posX, posY, posX + self.CELLSIZE, posY + self.CELLSIZE, fill="white")
+                self.playfield.tag_bind(self.cells[y][x], '<ButtonPress-1>', self.activateCell)
+                self.playfield.tag_bind(self.cells[y][x], '<ButtonPress-3>', self.placeFlag)
 
-createPlayfield()
+        self.playfield.pack()
 
-window.mainloop()
+    def getCoords(self, cell):
+        for x in range(self.sizeY):
+            for y in range(self.sizeX):
+                if self.cells[y][x] == cell[0]:
+                    return [x, y]
+
+
+if __name__ == "__main__":
+    app = minesweeper(None)
+    app.title('minesweeper')
+    app.mainloop()        
