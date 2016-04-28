@@ -18,7 +18,6 @@ class minesweeper(Tkinter.Tk):
         self.createValues()
         self.fillMineField()
         self.fillHints()
-        self.playfield = Tkinter.Canvas(self, width=self.WIDTH, height=self.HEIGHT)
         self.createPlayfield()
 
     def createValues(self):
@@ -99,18 +98,41 @@ class minesweeper(Tkinter.Tk):
     def createPlayfield(self):
 
         spacer = (self.CELLSIZE / 2)
+        self.playfield = Tkinter.Canvas(self, width=self.WIDTH, height=self.HEIGHT)
 
+        # position grid, hints and "buttons".
         for x in range(self.sizeY):
             for y in range(self.sizeX):
+                
+                # start position for the grid
+
                 posX = 10 + (self.CELLSIZE * x)
                 posY = 10 + (self.CELLSIZE * y)
+
+                # end position for the grid
+
+                posXbis = posX + self.CELLSIZE
+                posYbis = posy + self.CELLSIZE
+                
+                # position grid
+                # 
+                self.playfield.create_rectangle(posX, posY, posXbis, posYbis)
+
+                # position hints
+                # 
                 self.playfield.create_text(posX + spacer, posY + spacer, text=self.hints[x][y])
-                self.playfield.create_rectangle(posX, posY, posX + self.CELLSIZE, posY + self.CELLSIZE)
-                self.cells[y][x] = self.playfield.create_rectangle(posX, posY, posX + self.CELLSIZE, posY + self.CELLSIZE, fill="white")
+                
+                # position "buttons"
+                
+                self.cells[y][x] = self.playfield.create_rectangle(posX, posY, posXbis, posYbis, fill="white")
+                
+
+                # bind mouse clicks on the playfield
                 self.playfield.tag_bind(self.cells[y][x], '<ButtonPress-1>', self.activateCell)
                 self.playfield.tag_bind(self.cells[y][x], '<ButtonPress-3>', self.placeFlag)
 
         self.playfield.pack()
+
 
     def getCoords(self, cell):
         for x in range(self.sizeY):
