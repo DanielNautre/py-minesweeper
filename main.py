@@ -14,7 +14,6 @@ class minesweeper(Tkinter.Tk):
         self.initialize()
 
     def initialize(self):
-
         self.createValues()
         self.fillMineField()
         self.fillHints()
@@ -22,11 +21,11 @@ class minesweeper(Tkinter.Tk):
 
     def createValues(self):
         self.CELLSIZE = 30
-        self.sizeY = 10 # height
-        self.sizeX = 10 # width
+        self.sizeY = 10 # height of the grid
+        self.sizeX = 10 # width of the grid
         self.nbMines = 10
 
-        # Defines the Height and Width of the window based upon 
+        # Defines the height and width of the window based upon 
         # the grid size and the cell size
         self.WIDTH = (10 * 2) + (self.sizeY * self.CELLSIZE)
         self.HEIGHT = (10 * 2) + (self.sizeX * self.CELLSIZE) 
@@ -138,6 +137,7 @@ class minesweeper(Tkinter.Tk):
 
 
     def getCoords(self, cell):
+        """ Using the cell Tkinter id, find out it's X and Y value"""
         for x in range(self.sizeY):
             for y in range(self.sizeX):
                 if self.cells[y][x] == cell[0]:
