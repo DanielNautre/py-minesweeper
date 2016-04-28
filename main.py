@@ -47,9 +47,12 @@ class minesweeper(Tkinter.Tk):
 
 
     def fillHints(self):
+        """ This function fills the hints array with the correct hint depending on the field array """
 
         for y in range(self.sizeY):
             for x in range(self.sizeX):
+
+                # if there is a mine, show a "X" symbol
                 if self.field[y][x] == 1:
                     self.hints[y][x] = 'X'
                 else:
@@ -85,7 +88,7 @@ class minesweeper(Tkinter.Tk):
         elif cellValue == 0:
             pass
             # reveal all open field
-        else
+        else:
             pass
             
 
@@ -97,10 +100,11 @@ class minesweeper(Tkinter.Tk):
 
     def createPlayfield(self):
 
+        """ This function creates the canvas for the playfield and populate it with thegrid, the hints and the buttons. """
+
         spacer = (self.CELLSIZE / 2)
         self.playfield = Tkinter.Canvas(self, width=self.WIDTH, height=self.HEIGHT)
 
-        # position grid, hints and "buttons".
         for x in range(self.sizeY):
             for y in range(self.sizeX):
                 
@@ -112,7 +116,7 @@ class minesweeper(Tkinter.Tk):
                 # end position for the grid
 
                 posXbis = posX + self.CELLSIZE
-                posYbis = posy + self.CELLSIZE
+                posYbis = posY + self.CELLSIZE
                 
                 # position grid
                 # 
