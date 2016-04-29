@@ -19,6 +19,11 @@ class minesweeper(Tkinter.Tk):
 
         
     def startGame(self):
+        
+        for row in range(self.nbRow):
+            for col in range(self.nbCol):
+                self.field[row][col] = 0 
+
         self.fillMineField()
         self.fillHints()
 
@@ -27,9 +32,11 @@ class minesweeper(Tkinter.Tk):
 
         self.createPlayfield()
 
+
     def createInterface(self):
         startBtn = Tkinter.Button(self, text="Start", command=self.startGame)
         startBtn.pack()
+
 
     def createValues(self):
         """Generates the values used in the game """
@@ -52,6 +59,9 @@ class minesweeper(Tkinter.Tk):
         self.cells = [[0 for col in range(self.nbCol)] for row in range(self.nbRow)]
 
 
+
+
+
     def loadImages(self):
         self.mineImg =  Tkinter.PhotoImage(file="img/mine_placeholder.gif")
         self.flagImg =  Tkinter.PhotoImage(file="img/flag_placeholder.gif")
@@ -61,6 +71,8 @@ class minesweeper(Tkinter.Tk):
     def fillMineField(self):
         """ This function randomoly generates n number of mines in the field"""
         minesLeftToPlace = self.nbMines
+
+        print "A"
 
         while minesLeftToPlace > 0:
             randRow = randint(0, self.nbRow-1)
