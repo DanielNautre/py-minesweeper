@@ -15,9 +15,21 @@ class minesweeper(Tkinter.Tk):
 
     def initialize(self):
         self.createValues()
+        self.createInterface()
+
+        
+    def startGame(self):
         self.fillMineField()
         self.fillHints()
+
+        if hasattr(self, 'playfield'):
+            self.playfield.destroy()
+
         self.createPlayfield()
+
+    def createInterface(self):
+        startBtn = Tkinter.Button(self, text="Start", command=self.startGame)
+        startBtn.pack()
 
     def createValues(self):
         """Generates the values used in the game """
@@ -118,7 +130,6 @@ class minesweeper(Tkinter.Tk):
                  # reveal all open field in the vicinity
 
 
-            
     def removeFlag(self, event):
         """ remove the flag that was right clicked """
 
@@ -147,13 +158,13 @@ class minesweeper(Tkinter.Tk):
         self.playfield.tag_bind(flag, '<ButtonPress-3>', self.removeFlag)
 
 
-
     def createPlayfield(self):
         """ This function creates the canvas for the playfield and populate it with thegrid, the hints and the buttons. """
 
-        spacer = (self.CELLSIZE / 2)
-        print spacer
+        spacer = (self.CELLSIZE / 2)   
+
         self.playfield = Tkinter.Canvas(self, width=self.WIDTH, height=self.HEIGHT)
+        self.playfield.pack()
 
         self.loadImages()
 
@@ -195,6 +206,8 @@ class minesweeper(Tkinter.Tk):
             for col in range(self.nbCol):
                 if self.cells[row][col] == cell[0]:
                     return [row, col]
+
+
 
 
 if __name__ == "__main__":
