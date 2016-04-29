@@ -22,7 +22,7 @@ class minesweeper(Tkinter.Tk):
     def createValues(self):
         """Generates the values used in the game """
 
-        self.CELLSIZE = 34
+        self.CELLSIZE = 32 + 2 # take width of the borders into account
         self.nbRow = 10 # height of the grid (Y): aka nb of Rows
         self.nbCol = 10 # width of the grid (X): aka nb of Cols
         self.nbMines = 10
@@ -97,20 +97,26 @@ class minesweeper(Tkinter.Tk):
 
         cell = event.widget.find_closest(event.x, event.y)
         self.playfield.delete(cell)
-        self.uncoveredCells = self.uncoveredCells + 1
+
+
 
         coords = self.getCoords(cell)
         cellValue = self.hints[coords[0]][coords[1]]
 
         if cellValue == "X":
-            pass
+            print "You're dead"
             # Boum you're dead
-        elif cellValue == 0:
-            pass
-            # reveal all open field in the vicinity
         else:
+            self.uncoveredCells = self.uncoveredCells + 1
 
-            pass
+            if self.uncoveredCells == self.openCells:
+                print "You Won"
+                # You won
+                
+            if cellValue == 0:
+                pass
+                 # reveal all open field in the vicinity
+
 
             
     def removeFlag(self, event):
