@@ -22,10 +22,12 @@ class minesweeper(Tkinter.Tk):
     def createValues(self):
         """Generates the values used in the game """
 
-        self.CELLSIZE = 30
+        self.CELLSIZE = 32
         self.nbRow = 10 # height of the grid (Y): aka nb of Rows
         self.nbCol = 10 # width of the grid (X): aka nb of Cols
         self.nbMines = 10
+        self.openCells = (self.nbCol * self.nbRow) - self.nbMines
+        self.uncoveredCells = 0
 
         # Defines the height and width of the window based upon 
         # the grid size and the cell size
@@ -36,6 +38,13 @@ class minesweeper(Tkinter.Tk):
         self.hints = [[0 for col in range(self.nbCol)] for row in range(self.nbRow)]
         self.field = [[0 for col in range(self.nbCol)] for row in range(self.nbRow)]
         self.cells = [[0 for col in range(self.nbCol)] for row in range(self.nbRow)]
+
+
+    def loadImages(self):
+        self.mineImg =  Tkinter.PhotoImage(file="img/mine_placeholder.gif")
+        self.flagImg =  Tkinter.PhotoImage(file="img/flag_placeholder.gif")
+        # self.boumImg =  Tkinter.PhotoImage(file="img/boum_placeholder.gif")
+
 
     def fillMineField(self):
         """ This function randomoly generates n number of mines in the field"""
@@ -88,8 +97,11 @@ class minesweeper(Tkinter.Tk):
 
         cell = event.widget.find_closest(event.x, event.y)
         self.playfield.delete(cell)
+        self.uncoveredCells = self.uncoveredCells + 1
+
         coords = self.getCoords(cell)
         cellValue = self.hints[coords[0]][coords[1]]
+
         if cellValue == "X":
             pass
             # Boum you're dead
@@ -97,6 +109,7 @@ class minesweeper(Tkinter.Tk):
             pass
             # reveal all open field in the vicinity
         else:
+
             pass
 
             
@@ -117,14 +130,14 @@ class minesweeper(Tkinter.Tk):
         and block the cell from being activated"""
 
         cell = event.widget.find_closest(event.x, event.y)
-        print cell
 
         #block player from placing a flag or clicking on the cell
         self.playfield.tag_unbind(cell, "<ButtonPress-1>")
         self.playfield.tag_unbind(cell, "<ButtonPress-3>")
 
+        spacer = (self.CELLSIZE / 2)
         coords = self.playfield.coords(cell)
-        flag = self.playfield.create_text(coords[0] + 15, coords[1] + 15, text="M")
+        flag = self.playfield.create_image(coords[0] + spacer, coords[1] + spacer, image=self.flagImg)
         self.playfield.tag_bind(flag, '<ButtonPress-3>', self.removeFlag)
 
 
@@ -133,7 +146,10 @@ class minesweeper(Tkinter.Tk):
         """ This function creates the canvas for the playfield and populate it with thegrid, the hints and the buttons. """
 
         spacer = (self.CELLSIZE / 2)
+        print spacer
         self.playfield = Tkinter.Canvas(self, width=self.WIDTH, height=self.HEIGHT)
+
+        self.loadImages()
 
         for row in range(self.nbRow):
             for col in range(self.nbCol):
@@ -150,7 +166,11 @@ class minesweeper(Tkinter.Tk):
                 self.playfield.create_rectangle(posX, posY, posXbis, posYbis)
 
                 # position hints
-                self.playfield.create_text(posX + spacer, posY + spacer, text=self.hints[row][col])
+                
+                if self.hints[row][col] == "X":
+                    self.playfield.create_image(posX + spacer, posY + spacer, image=self.mineImg)
+                else:
+                    self.playfield.create_text(posX + spacer, posY + spacer, text=self.hints[row][col])
                 
                 # position "buttons"
                 self.cells[row][col] = self.playfield.create_rectangle(posX, posY, posXbis, posYbis, fill="white")
