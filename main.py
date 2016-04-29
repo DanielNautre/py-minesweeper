@@ -20,6 +20,8 @@ class minesweeper(Tkinter.Tk):
         self.createPlayfield()
 
     def createValues(self):
+        """Generates the values used in the game """
+
         self.CELLSIZE = 30
         self.nbRow = 10 # height of the grid (Y): aka nb of Rows
         self.nbCol = 10 # width of the grid (X): aka nb of Cols
@@ -36,7 +38,7 @@ class minesweeper(Tkinter.Tk):
         self.cells = [[0 for col in range(self.nbCol)] for row in range(self.nbRow)]
 
     def fillMineField(self):
-
+        """ This function randomoly generates n number of mines in the field"""
         minesLeftToPlace = self.nbMines
 
         while minesLeftToPlace > 0:
@@ -94,16 +96,30 @@ class minesweeper(Tkinter.Tk):
             # reveal all open field
         else:
             pass
-            
 
-    def placeFlag(self,event):
+            
+    def removeFlag(self, event):
+        """ remove the flag that was right clicked """
+        flag = event.widget.find_closest(event.x, event.y)
+        self.playfield.delete(flag)
+
+
+    def placeFlag(self, event):
+        """ if a cell is right clicked, place a flag 
+        and block the cell from being activated"""
+
         cell = event.widget.find_closest(event.x, event.y)
+
+        #block right click and rebind right click to remove the flag
+        self.playfield.tag_unbind(cell, "<ButtonPress-1>")
+
         coords = self.playfield.coords(cell)
-        self.playfield.create_text(coords[0] + 15, coords[1] + 15, text="M")
+        flag = self.playfield.create_text(coords[0] + 15, coords[1] + 15, text="M")
+        self.playfield.tag_bind(flag, '<ButtonPress-3>', self.removeFlag)
+
 
 
     def createPlayfield(self):
-
         """ This function creates the canvas for the playfield and populate it with thegrid, the hints and the buttons. """
 
         spacer = (self.CELLSIZE / 2)
