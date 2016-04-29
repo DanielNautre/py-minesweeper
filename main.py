@@ -19,7 +19,8 @@ class minesweeper(Tkinter.Tk):
 
         
     def startGame(self):
-        
+
+        # make sure there is no existing mines in the field
         for row in range(self.nbRow):
             for col in range(self.nbCol):
                 self.field[row][col] = 0 
