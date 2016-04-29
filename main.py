@@ -22,7 +22,7 @@ class minesweeper(Tkinter.Tk):
     def createValues(self):
         """Generates the values used in the game """
 
-        self.CELLSIZE = 32
+        self.CELLSIZE = 34
         self.nbRow = 10 # height of the grid (Y): aka nb of Rows
         self.nbCol = 10 # width of the grid (X): aka nb of Cols
         self.nbMines = 10
@@ -155,8 +155,8 @@ class minesweeper(Tkinter.Tk):
             for col in range(self.nbCol):
                 
                 # start position for the cells
-                posX = 10 + (self.CELLSIZE * col)
-                posY = 10 + (self.CELLSIZE * row)
+                posX = 10 + (self.CELLSIZE * col) 
+                posY = 10 + (self.CELLSIZE * row) 
 
                 # end position for the cells
                 posXbis = posX + self.CELLSIZE
