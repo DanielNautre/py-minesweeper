@@ -12,6 +12,7 @@ class minesweeper(Tkinter.Tk):
         Tkinter.Tk.__init__(self,parent)
         self.parent = parent
         self.initialize()
+        self.test = 0
 
     def initialize(self):
         self.createValues()
@@ -24,6 +25,9 @@ class minesweeper(Tkinter.Tk):
         for row in range(self.nbRow):
             for col in range(self.nbCol):
                 self.field[row][col] = 0 
+
+        # reset victory condition counter
+        self.uncoveredCells = 0 
 
         self.fillMineField()
         self.fillHints()
@@ -47,7 +51,6 @@ class minesweeper(Tkinter.Tk):
         self.nbCol = 10 # width of the grid (X): aka nb of Cols
         self.nbMines = 10
         self.openCells = (self.nbCol * self.nbRow) - self.nbMines
-        self.uncoveredCells = 0
 
         # Defines the height and width of the window based upon 
         # the grid size and the cell size
@@ -58,9 +61,6 @@ class minesweeper(Tkinter.Tk):
         self.hints = [[0 for col in range(self.nbCol)] for row in range(self.nbRow)]
         self.field = [[0 for col in range(self.nbCol)] for row in range(self.nbRow)]
         self.cells = [[0 for col in range(self.nbCol)] for row in range(self.nbRow)]
-
-
-
 
 
     def loadImages(self):
@@ -116,31 +116,65 @@ class minesweeper(Tkinter.Tk):
 
                     self.hints[row][col] = mineCount
 
+    def getCellValue(self, row, col):
+        return self.hints[row][col]
 
-    def activateCell(self, event):
-        """this function reacts to the player "stepping" on a cell depeding on the presence or not of a mine"""
+    def uncoverCell(self, row, col):
+        
+        # count number of time this function is run
+        self.test = self.test + 1 
+        #print self.test
 
-        cell = event.widget.find_closest(event.x, event.y)
-        self.playfield.delete(cell)
+        cellId = self.cells[row][col]
+        if cellId == "O":
+            return
+        self.cells[row][col] = "O"
+        self.playfield.delete(cellId)
 
-
-
-        coords = self.getCoords(cell)
-        cellValue = self.hints[coords[0]][coords[1]]
-
-        if cellValue == "X":
+        if "X" == self.getCellValue(row, col):
             print "You're dead"
             # Boum you're dead
         else:
             self.uncoveredCells = self.uncoveredCells + 1
+            print self.uncoveredCells
+            print " out of "
+            print self.openCells
 
             if self.uncoveredCells == self.openCells:
                 print "You Won"
+                return
                 # You won
-                
-            if cellValue == 0:
-                pass
-                 # reveal all open field in the vicinity
+            
+            if 0 == self.getCellValue(row, col):
+
+                if col > 0:
+                    if row > 0:
+                        self.uncoverCell(row-1, col-1)
+                    if row < (self.nbRow-1):
+                        self.uncoverCell(row+1, col-1)
+                    self.uncoverCell(row, col-1)
+
+                if col < (self.nbCol-1):
+                    if row > 0:
+                         self.uncoverCell(row-1, col+1)
+                    if row < (self.nbRow-1):
+                        self.uncoverCell(row+1, col+1) 
+                    self.uncoverCell(row, col+1) 
+
+                if row > 0:
+                    self.uncoverCell(row-1, col)
+                if row < (self.nbRow-1):
+                    self.uncoverCell(row+1, col)
+
+
+    def activateCell(self, event):
+        """this function reacts to the player "stepping" on a cell depending on the presence or not of a mine"""
+
+
+        cell = event.widget.find_closest(event.x, event.y)
+        coords = self.getCoords(cell)
+        
+        self.uncoverCell(coords[0], coords[1])        
 
 
     def removeFlag(self, event):
@@ -219,7 +253,6 @@ class minesweeper(Tkinter.Tk):
             for col in range(self.nbCol):
                 if self.cells[row][col] == cell[0]:
                     return [row, col]
-
 
 
 
