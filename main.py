@@ -84,6 +84,8 @@ class minesweeper(Tkinter.Tk):
 
 
     def activateCell(self, event):
+        """this function reacts to the player "stepping" on a cell depeding on the presence or not of a mine"""
+
         cell = event.widget.find_closest(event.x, event.y)
         self.playfield.delete(cell)
         coords = self.getCoords(cell)
@@ -93,15 +95,21 @@ class minesweeper(Tkinter.Tk):
             # Boum you're dead
         elif cellValue == 0:
             pass
-            # reveal all open field
+            # reveal all open field in the vicinity
         else:
             pass
 
             
     def removeFlag(self, event):
         """ remove the flag that was right clicked """
+
         flag = event.widget.find_closest(event.x, event.y)
         self.playfield.delete(flag)
+
+        # rebind the cell to placeFlag and activateCell
+        cell = event.widget.find_closest(event.x, event.y)
+        self.playfield.tag_bind(cell, '<ButtonPress-3>', self.placeFlag)       
+        self.playfield.tag_bind(cell, '<ButtonPress-1>', self.activateCell)
 
 
     def placeFlag(self, event):
@@ -109,9 +117,11 @@ class minesweeper(Tkinter.Tk):
         and block the cell from being activated"""
 
         cell = event.widget.find_closest(event.x, event.y)
+        print cell
 
-        #block right click and rebind right click to remove the flag
+        #block player from placing a flag or clicking on the cell
         self.playfield.tag_unbind(cell, "<ButtonPress-1>")
+        self.playfield.tag_unbind(cell, "<ButtonPress-3>")
 
         coords = self.playfield.coords(cell)
         flag = self.playfield.create_text(coords[0] + 15, coords[1] + 15, text="M")
