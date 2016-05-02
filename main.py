@@ -19,7 +19,6 @@ class minesweeper(Tkinter.Tk):
 
         
     def startGame(self):
-
         # make sure there is no existing mines in the field
         for row in range(self.nbRow):
             for col in range(self.nbCol):
@@ -40,6 +39,8 @@ class minesweeper(Tkinter.Tk):
 
 
     def createInterface(self):
+        """ Create the basic interface of the game """
+
         startBtn = Tkinter.Button(self, text="Start", command=self.startGame)
         self.statusBar = Tkinter.Label(self, text="", bd=1, relief=Tkinter.SUNKEN, anchor=Tkinter.W)
         self.statusBar.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)
@@ -123,8 +124,7 @@ class minesweeper(Tkinter.Tk):
         return self.hints[row][col]
 
     def uncoverCell(self, row, col):
-        
-        # count number of time this function is run
+        """ uncover the cell sepcified by its coords and act depending on its content"""
 
         cellId = self.cells[row][col]
         if cellId == "O":
@@ -145,7 +145,7 @@ class minesweeper(Tkinter.Tk):
                 # You won
             
             if 0 == self.getCellValue(row, col):
-
+                # this recursively opens all adjacents empty cells
                 if col > 0:
                     if row > 0:
                         self.uncoverCell(row-1, col-1)
