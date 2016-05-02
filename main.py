@@ -29,6 +29,8 @@ class minesweeper(Tkinter.Tk):
         # reset victory condition counter
         self.uncoveredCells = 0 
 
+        self.statusBar.config(text="") 
+
         self.fillMineField()
         self.fillHints()
 
@@ -40,6 +42,8 @@ class minesweeper(Tkinter.Tk):
 
     def createInterface(self):
         startBtn = Tkinter.Button(self, text="Start", command=self.startGame)
+        self.statusBar = Tkinter.Label(self, text="", bd=1, relief=Tkinter.SUNKEN, anchor=Tkinter.W)
+        self.statusBar.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)
         startBtn.pack()
 
 
@@ -49,7 +53,7 @@ class minesweeper(Tkinter.Tk):
         self.CELLSIZE = 32 + 2 # take width of the borders into account
         self.nbRow = 10 # height of the grid (Y): aka nb of Rows
         self.nbCol = 10 # width of the grid (X): aka nb of Cols
-        self.nbMines = 10
+        self.nbMines = 15
         self.openCells = (self.nbCol * self.nbRow) - self.nbMines
 
         # Defines the height and width of the window based upon 
@@ -132,7 +136,8 @@ class minesweeper(Tkinter.Tk):
         self.playfield.delete(cellId)
 
         if "X" == self.getCellValue(row, col):
-            print "You're dead"
+            self.statusBar.config(text="You're dead")
+            return
             # Boum you're dead
         else:
             self.uncoveredCells = self.uncoveredCells + 1
@@ -141,7 +146,7 @@ class minesweeper(Tkinter.Tk):
             print self.openCells
 
             if self.uncoveredCells == self.openCells:
-                print "You Won"
+                self.statusBar.config(text="You Won") 
                 return
                 # You won
             
