@@ -12,7 +12,6 @@ class minesweeper(Tkinter.Tk):
         Tkinter.Tk.__init__(self,parent)
         self.parent = parent
         self.initialize()
-        self.test = 0
 
     def initialize(self):
         self.createValues()
@@ -126,8 +125,6 @@ class minesweeper(Tkinter.Tk):
     def uncoverCell(self, row, col):
         
         # count number of time this function is run
-        self.test = self.test + 1 
-        #print self.test
 
         cellId = self.cells[row][col]
         if cellId == "O":
@@ -141,9 +138,6 @@ class minesweeper(Tkinter.Tk):
             # Boum you're dead
         else:
             self.uncoveredCells = self.uncoveredCells + 1
-            print self.uncoveredCells
-            print " out of "
-            print self.openCells
 
             if self.uncoveredCells == self.openCells:
                 self.statusBar.config(text="You Won") 
