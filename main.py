@@ -232,7 +232,7 @@ class minesweeper(Tkinter.Tk):
                 
                 if self.hints[row][col] == "X":
                     self.playfield.create_image(posX + spacer, posY + spacer, image=self.mineImg)
-                else:
+                elif self.hints[row][col] != 0:
                     self.playfield.create_text(posX + spacer, posY + spacer, text=self.hints[row][col])
                 
                 # position "buttons"
