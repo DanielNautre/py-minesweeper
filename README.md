@@ -11,6 +11,7 @@ I'm not planning to turn this into anything more than a exercice, there are plen
 
 Have Fun !
 
-DISCLAIMER:
+Contributors:
 
-The ugly graphics are placeholders and are not final. You're welcome to submit new ones if my bad drawing skills make your eyes bleed.
+- Daniel Nautré: Python Code and overall project management
+- Servane: Graphics and design
