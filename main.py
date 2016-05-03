@@ -65,7 +65,7 @@ class minesweeper(Tkinter.Tk):
         self.cells = [[0 for col in range(self.nbCol)] for row in range(self.nbRow)]
 
     def loadImages(self):
-        self.mineImg = Tkinter.PhotoImage(file="img/mine_placeholder.gif")
+        self.mineImg = Tkinter.PhotoImage(file="img/mine.gif")
         self.flagImg = Tkinter.PhotoImage(file="img/flag_placeholder.gif")
         # self.boumImg = Tkinter.PhotoImage(file="img/boum_placeholder.gif")
 
